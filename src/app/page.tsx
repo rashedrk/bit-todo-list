@@ -1,5 +1,13 @@
+import AddNewTask from "@/components/Today/AddNewTask/AddNewTask";
+import TodoItem from "@/components/TodoItem/TodoItem";
+
 export default function Home() {
   return (
-    <div>this is home</div>
+    <>
+    <AddNewTask/>
+    <TodoItem/>
+    <TodoItem/>
+    <TodoItem/>
+    </>
   )
 }

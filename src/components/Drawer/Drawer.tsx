@@ -1,6 +1,6 @@
 'use client'
 
-import { sidebarGenerator } from "@/app/utils/SidebarGenerator";
+import { sidebarGenerator } from "@/utils/SidebarGenerator";
 import { sidebarCategory, sidebarTasks } from "@/constant/sidebar.constant";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
