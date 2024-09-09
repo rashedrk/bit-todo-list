@@ -11,7 +11,7 @@ type TDateProps = {
   className?: string;
 };
 
-const TCDatePicker = ({
+const TDatePicker = ({
   name,
   placeholder,
   disabled = false,
@@ -50,4 +50,4 @@ const TCDatePicker = ({
   );
 };
 
-export default TCDatePicker;
+export default TDatePicker;

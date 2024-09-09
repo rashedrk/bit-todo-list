@@ -1,12 +1,12 @@
+import { ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 type TOptions = {
-  label: string;
+  label: ReactNode,
   value: string;
 };
 
 type TSelectProps = {
-  type: string;
   name: string;
   label?: string;
   placeholder?: string;
@@ -44,7 +44,7 @@ const TSelect = ({
               {placeholder}
             </option>
             {options?.map((option) => (
-              <option key={option.label} value={option.value}>
+              <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}

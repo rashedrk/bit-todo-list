@@ -9,7 +9,7 @@ type TInputProps = {
   className?: string;
 };
 
-const TCInput = ({
+const TInput = ({
   name,
   label,
   type,
@@ -43,4 +43,4 @@ const TCInput = ({
   );
 };
 
-export default TCInput;
+export default TInput;
