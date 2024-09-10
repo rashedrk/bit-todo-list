@@ -38,7 +38,7 @@ const AddNewTaskModal = () => {
         onClick={() => handleClick("open")}
       >
         <IoMdAdd className="text-xl" />
-        <p className="text-gray-500">Add New Task</p>
+        <p className="text-gray-800">Add New Task</p>
       </div>
 
       <dialog id="addTaskModal" className="modal modal-bottom sm:modal-middle">

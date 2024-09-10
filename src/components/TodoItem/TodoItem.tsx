@@ -13,14 +13,14 @@ const TodoItem = () => {
           />
         </div>
         <div>
-          <p className="text-gray-600">Research content title</p>
-          <p className="text-gray-400 text-xs">
+          <p className="text-gray-800">Research content title</p>
+          <p className="text-gray-600 text-xs">
             this is meant to be the description of the task. could be more
             described and be long as it is
           </p>
-          <div className="flex gap-5 mt-2 text-xs text-gray-600">
+          <div className="flex gap-5 mt-2 text-xs text-gray-800">
             <div className="flex gap-2 items-center justify-start">
-              <FaCalendarDay className="text-gray-500" />
+              <FaCalendarDay className="text-gray-600" />
               <p>22-08-2024</p>
             </div>
             <div className="flex justify-start items-center gap-2 border-l-2 ps-4">
@@ -32,17 +32,17 @@ const TodoItem = () => {
       </div>
       <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className=" m-1">
-        <BsThreeDots className="text-xl text-gray-600 cursor-pointer" />
+        <BsThreeDots className="text-xl text-gray-800 cursor-pointer" />
         </div>
         <ul
           tabIndex={0}
           className="dropdown-content menu bg-base-100 rounded-box z-[1] w-28 p-2 shadow"
         >
           <li>
-            <a><FaEdit className="text-gray-600 "/> Edit</a>
+            <a><FaEdit className="text-gray-700 "/> Edit</a>
           </li>
           <li>
-            <a><MdAutoDelete className="text-gray-600 "/> Delete</a>
+            <a><MdAutoDelete className="text-gray-700 "/> Delete</a>
           </li>
         </ul>
       </div>
