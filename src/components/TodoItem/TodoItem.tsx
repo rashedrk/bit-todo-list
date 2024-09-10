@@ -1,8 +1,10 @@
 import { FaCalendarDay } from "react-icons/fa6";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdAutoDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import { BsThreeDots } from "react-icons/bs";
 const TodoItem = () => {
   return (
-    <div className="flex justify-between items-center border-b px-2 py-3">
+    <div className="flex justify-between items-center border-b px-2 py-3 hover:bg-slate-50">
       <div className="flex gap-5 items-start">
         <div>
           <input
@@ -18,22 +20,33 @@ const TodoItem = () => {
           </p>
           <div className="flex gap-5 mt-2 text-xs text-gray-600">
             <div className="flex gap-2 items-center justify-start">
-              <FaCalendarDay className="text-gray-500"/>
+              <FaCalendarDay className="text-gray-500" />
               <p>22-08-2024</p>
             </div>
             <div className="flex justify-start items-center gap-2 border-l-2 ps-4">
-              <div
-                className="h-3 w-3 rounded bg-[#66D9E8]"
-              ></div>
-
+              <div className="h-3 w-3 rounded bg-[#66D9E8]"></div>
               <p>Personal</p>
             </div>
           </div>
         </div>
       </div>
-      <div>
-      <MdKeyboardArrowRight className="text-4xl text-gray-600"/>
+      <div className="dropdown dropdown-end">
+        <div tabIndex={0} role="button" className=" m-1">
+        <BsThreeDots className="text-xl text-gray-600 cursor-pointer" />
+        </div>
+        <ul
+          tabIndex={0}
+          className="dropdown-content menu bg-base-100 rounded-box z-[1] w-28 p-2 shadow"
+        >
+          <li>
+            <a><FaEdit className="text-gray-600 "/> Edit</a>
+          </li>
+          <li>
+            <a><MdAutoDelete className="text-gray-600 "/> Delete</a>
+          </li>
+        </ul>
       </div>
+     
     </div>
   );
 };

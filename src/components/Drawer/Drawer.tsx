@@ -36,14 +36,13 @@ const Drawer = ({ children }: { children: ReactNode }) => {
               </svg>
             </label>
           </div>
-          <div className="flex justify-between items-center w-full">
+          {/* <div className="flex justify-between items-center w-full">
             <div>
               <h4 className=" font-semibold text-3xl text-gray-700">Today</h4>
             </div>
-          </div>
+          </div> */}
         </div>
         {/* Page content here */}
-
         <div className="p-4 w-screen lg:w-full">{children}</div>
       </div>
 
