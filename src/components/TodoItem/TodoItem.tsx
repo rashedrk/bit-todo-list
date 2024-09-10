@@ -2,6 +2,7 @@ import { FaCalendarDay } from "react-icons/fa6";
 import { MdAutoDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
+import EditTaskModal from "../Modals/EditTaskModal/EditTaskModal";
 const TodoItem = () => {
   return (
     <div className="flex justify-between items-center border-b px-2 py-3 hover:bg-slate-50">
@@ -38,9 +39,7 @@ const TodoItem = () => {
           tabIndex={0}
           className="dropdown-content menu bg-base-100 rounded-box z-[1] w-28 p-2 shadow"
         >
-          <li>
-            <a><FaEdit className="text-gray-700 "/> Edit</a>
-          </li>
+          <EditTaskModal/>
           <li>
             <a><MdAutoDelete className="text-gray-700 "/> Delete</a>
           </li>
