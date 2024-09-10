@@ -1,6 +1,5 @@
 import { FaCalendarDay } from "react-icons/fa6";
 import { MdAutoDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
 import EditTaskModal from "../Modals/EditTaskModal/EditTaskModal";
 const TodoItem = () => {
@@ -45,7 +44,7 @@ const TodoItem = () => {
           </li>
         </ul>
       </div>
-     
+
     </div>
   );
 };
