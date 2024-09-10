@@ -11,9 +11,12 @@ import taskImg from "@/assets/task.jpg";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { redirect } from "next/navigation";
+import { useRouter } from 'next/navigation'
 
 const LoginPage = () => {
+  const router = useRouter()
+
+  //login as user
   const handleLogin: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Login in, Please wait...");
     try {
@@ -28,8 +31,9 @@ const LoginPage = () => {
         toast.error(result.error, { id: toastId, duration: 2000 });
       } else {
         // Successful login
+        router.push('/');
         toast.success("Login Successful!", { id: toastId, duration: 2000 });
-        redirect("/");
+        
       }
     } catch (error: any) {
       console.error("Error during login:", error.message);

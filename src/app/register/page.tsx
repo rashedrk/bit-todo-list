@@ -8,19 +8,25 @@ import { MdLogin } from "react-icons/md";
 import taskImg from "@/assets/task.jpg";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const RegisterPage = () => {
+  const router = useRouter();
+
   const handleRegister: SubmitHandler<FieldValues> = async (values) => {
-    console.log(values);
+    const toastId= toast.loading("Creating account, please wait...");
     try {
       const res = await axios.post("/api/auth/register", values);
       console.log(res.data);
       if (res.data.success) {
-        alert("Account created successfully");
+        router.push("/login");
+        alert();
+        toast.success("Account created successfully", {id: toastId, duration: 2000});
       }
     } catch (e: any) {
-      alert(e.response.data.message);
       console.log(e.response.data.message);
+      toast.error(e.response.data.message, {id: toastId, duration: 2000})
     }
   };
 
