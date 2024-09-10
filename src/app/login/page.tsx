@@ -10,13 +10,31 @@ import taskImg from "@/assets/task.jpg";
 // import githubImg from "@/assets/github.png";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { toast } from "sonner";
+import { redirect } from "next/navigation";
 
 const LoginPage = () => {
   const handleLogin: SubmitHandler<FieldValues> = async (values) => {
-    await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-    });
+    const toastId = toast.loading("Login in, Please wait...");
+    try {
+      const result = await signIn("credentials", {
+        redirect: false, // Prevent automatic redirection to handle error display
+        email: values.email,
+        password: values.password,
+      });
+
+      if (result?.error) {
+        console.error("Error during login:", result.error);
+        toast.error(result.error, { id: toastId, duration: 2000 });
+      } else {
+        // Successful login
+        toast.success("Login Successful!", { id: toastId, duration: 2000 });
+        redirect("/");
+      }
+    } catch (error: any) {
+      console.error("Error during login:", error.message);
+      toast.error(error.message, { id: toastId, duration: 2000 });
+    }
   };
 
   return (

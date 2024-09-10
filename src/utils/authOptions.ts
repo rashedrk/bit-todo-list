@@ -1,6 +1,4 @@
 import { NextAuthOptions } from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { loginQuery } from "@/lib/query/hasuraQuery";
@@ -35,7 +33,7 @@ export const authOptions: NextAuthOptions = {
                     );
 
                     if (!isUserExist) {
-                        throw new Error("No user found");
+                        throw new Error("User not found!");
                     }
 
                     // Match the given password with the stored password
