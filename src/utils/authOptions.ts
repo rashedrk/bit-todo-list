@@ -7,6 +7,9 @@ import { JWT } from "next-auth/jwt";
 import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
+    session: {
+        strategy: "jwt",
+    },
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -46,6 +49,7 @@ export const authOptions: NextAuthOptions = {
                     return {
                         email: isUserExist.email,
                         id: isUserExist.user_id,
+                        name: isUserExist.username
                     };
                 } catch (error: any) {
                     console.error("Error in authorize function:", error.message);
@@ -54,17 +58,20 @@ export const authOptions: NextAuthOptions = {
             },
         }),
     ],
+    pages: {
+        signIn: '/login'
+    },
     secret: process.env.NEXTAUTH_SECRET,
     jwt: {
         encode: ({ secret, token }) => {
             const encodedToken = jsonwebtoken.sign(token!, secret, {
-                algorithm: "HS256",
+                algorithm: "HS512",
             });
             return encodedToken;
         },
         decode: async ({ secret, token }) => {
             const decodedToken = jsonwebtoken.verify(token!, secret, {
-                algorithms: ["HS256"],
+                algorithms: ["HS512"],
             });
             return decodedToken as JWT;
         },
@@ -76,8 +83,8 @@ export const authOptions: NextAuthOptions = {
                 ...user,
                 "https://hasura.io/jwt/claims": {
                     "x-hasura-allowed-roles": ["user", "admin"],
-                    "x-hasura-default-role": token.role,
-                    "x-hasura-role": token.role,
+                    "x-hasura-default-role": "user",
+                    "x-hasura-role": "user",
                     "x-hasura-user-id": token.sub,
                 },
             };
@@ -85,13 +92,14 @@ export const authOptions: NextAuthOptions = {
         session: async ({ session, token }: any) => {
             try {
                 const encodedToken = jsonwebtoken.sign(token, process.env.NEXTAUTH_SECRET as string, {
-                    algorithm: "HS256",
+                    algorithm: "HS512",
                 });
-                if (session?.user) {
+                
                     session.user.id = token.sub!;
-                    session.user.role = token.role!;
+                    session.user.name= token.name;
                     session.accessToken = encodedToken;
-                }
+
+                
                 return session;
             } catch (error: any) {
                 console.error("Error in session callback:", error.message);
