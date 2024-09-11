@@ -31,3 +31,17 @@ export const getTasksQuery = (userId: string) => `
     }
   }
 `;
+export const addTasksQuery = (task: any) => `
+  mutation MyMutation {
+  insert_task_one(object: ${task}) {
+    title
+    task_id
+    status
+    description
+    due_date
+    category
+    priority
+    user_id
+  }
+}
+`;

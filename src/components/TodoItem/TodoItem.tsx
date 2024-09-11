@@ -3,6 +3,8 @@ import { MdAutoDelete } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 import EditTaskModal from "../Modals/EditTaskModal/EditTaskModal";
 import { TTask } from "@/types/global.type";
+import { capitalize } from "lodash";
+
 const TodoItem = ({ task }: { task: TTask }) => {
   return (
     <div className="flex justify-between items-center border-b px-2 py-3 hover:bg-slate-50">
@@ -14,7 +16,7 @@ const TodoItem = ({ task }: { task: TTask }) => {
           />
         </div>
         <div>
-          <p className="text-gray-800">{task?.title}</p>
+          <p className="text-gray-800">{capitalize(task?.title)}</p>
           <p className="text-gray-600 text-xs">{task?.description}</p>
           <div className="flex gap-5 mt-2 text-xs text-gray-800">
             <div className="flex gap-2 items-center justify-start">
@@ -22,8 +24,8 @@ const TodoItem = ({ task }: { task: TTask }) => {
               <p>{task?.due_date}</p>
             </div>
             <div className="flex justify-start items-center gap-2 border-l-2 ps-4">
-              <div className="h-3 w-3 rounded bg-[#66D9E8]"></div>
-              <p>{task?.category}</p>
+              <div className={`h-3 w-3 rounded bg-[#66D9E8] ${task?.category === 'personal'? "bg-[#FF6B6B]": (task?.category === 'work' ? "bg-[#66D9E8]" : "bg-[#FFD43B]")}`}></div>
+              <p>{capitalize(task?.category)}</p>
             </div>
           </div>
         </div>
