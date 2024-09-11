@@ -41,7 +41,7 @@ const TodaysTaskPage = () => {
       <h1 className="mb-5 text-2xl font-semibold">Today</h1>
       <AddNewTaskModal setTasks={setTasks}/>
       {tasks?.map((item: TTask) => (
-        <TodoItem key={item.task_id} task={item} />
+        <TodoItem key={item.task_id} task={item} setTasks={setTasks} />
       ))}
     </div>
   );

@@ -4,8 +4,46 @@ import { BsThreeDots } from "react-icons/bs";
 import EditTaskModal from "../Modals/EditTaskModal/EditTaskModal";
 import { TTask } from "@/types/global.type";
 import { capitalize } from "lodash";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import axiosQuery from "@/lib/query/axiosQuery";
+import { deleteTaskQuery } from "@/lib/query/hasuraQuery";
 
-const TodoItem = ({ task }: { task: TTask }) => {
+const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
+  const { data: session } = useSession();
+
+  const handleDeleteTask = async () => {
+    const toastId = toast.loading("Deleting task, please wait...");
+
+    try {
+      const token = session?.accessToken;
+
+      if (!token) {
+        throw new Error("No access token or user ID found");
+      }
+
+      const query = deleteTaskQuery(task.task_id);
+
+      const data = await axiosQuery(token, query);
+      console.log(data);
+      
+
+      if(data.data.update_task_by_pk.task_id) {
+        setTasks((prevTasks : any) =>
+          prevTasks.filter((prevTask: TTask) => prevTask.task_id !== task.task_id)
+        );
+        toast.success("Task deleted Successfully", { id: toastId, duration: 2000 });
+      }
+      else {
+        toast.error("Invalid task", { id: toastId, duration: 2000 })
+      }
+      
+    } catch (error: any) {
+      console.error("Error while deleting task:", error.message);
+      toast.error(error.message, { id: toastId, duration: 2000 });
+    }
+  };
+
   return (
     <div className="flex justify-between items-center border-b px-2 py-3 hover:bg-slate-50">
       <div className="flex gap-5 items-start">
@@ -24,7 +62,15 @@ const TodoItem = ({ task }: { task: TTask }) => {
               <p>{task?.due_date}</p>
             </div>
             <div className="flex justify-start items-center gap-2 border-l-2 ps-4">
-              <div className={`h-3 w-3 rounded bg-[#66D9E8] ${task?.category === 'personal'? "bg-[#FF6B6B]": (task?.category === 'work' ? "bg-[#66D9E8]" : "bg-[#FFD43B]")}`}></div>
+              <div
+                className={`h-3 w-3 rounded bg-[#66D9E8] ${
+                  task?.category === "personal"
+                    ? "bg-[#FF6B6B]"
+                    : task?.category === "work"
+                    ? "bg-[#66D9E8]"
+                    : "bg-[#FFD43B]"
+                }`}
+              ></div>
               <p>{capitalize(task?.category)}</p>
             </div>
           </div>
@@ -39,7 +85,7 @@ const TodoItem = ({ task }: { task: TTask }) => {
           className="dropdown-content menu bg-base-100 rounded-box z-[1] w-28 p-2 shadow"
         >
           <EditTaskModal />
-          <li>
+          <li onClick={handleDeleteTask}>
             <a>
               <MdAutoDelete className="text-gray-700 " /> Delete
             </a>

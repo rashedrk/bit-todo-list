@@ -52,3 +52,12 @@ export const addTasksQuery = (task: any) => `
     }
   }
 `;
+export const deleteTaskQuery = (id: any) => `
+  mutation DeleteTask {
+  update_task_by_pk(pk_columns: {task_id: ${id}}, _set: {isdeleted: true}) {
+    task_id
+    title
+    isdeleted
+  }
+}
+`;
