@@ -11,7 +11,7 @@ export const loginQuery = {
                     }
                         }`,
 };
-// due_date: { _eq: "${new Date().toISOString().split('T')[0]}" }
+
 export const getTasksQuery = (userId: string) => `
   query GetTasks {
     task(where: {
@@ -99,4 +99,14 @@ export const updateTaskQuery = (id: number, task: Partial<TTask>) => `
   }
 }
 
+`;
+
+export const updateTaskStatusQuery = (id: number, status:string) => `
+  mutation UpdateTaskStatus {
+  update_task_by_pk(pk_columns: {task_id: ${id}}, _set: {status: ${status}}) {
+    task_id
+    title
+    status
+  }
+}
 `;

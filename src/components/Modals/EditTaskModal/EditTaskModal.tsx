@@ -82,7 +82,7 @@ const EditTaskModal = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
 
   return (
     <>
-      <li onClick={() => handleClick("open")}>
+      <li className={task.status === "completed" ? "hidden": ""} onClick={() => handleClick("open")}>
         <a>
           <FaEdit className="text-gray-700 " /> Edit
         </a>
