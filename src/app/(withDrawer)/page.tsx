@@ -1,26 +1,50 @@
+"use client";
+
 import AddNewTaskModal from "@/components/Modals/AddNewTaskModal/AddNewTaskModal";
 import TodoItem from "@/components/TodoItem/TodoItem";
-import { fetchGraphQL } from "@/lib/query/graphqlClient";
+import axiosQuery from "@/lib/query/axiosQuery";
 import { getTasksQuery } from "@/lib/query/hasuraQuery";
 import { TTask } from "@/types/global.type";
-import { authOptions } from "@/utils/authOptions";
-import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
-  // console.log('session: ' , session);
+const TodaysTaskPage = () => {
+  const { data: session } = useSession();
+  const [tasks, setTasks] = useState([]);
 
-  const data = await fetchGraphQL(getTasksQuery(session?.user?.id as string));
-
+  // console.log(session);
   
-  
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const token = session?.accessToken; 
+        const userId = session?.user?.id;
+
+        if (!token || !userId) {
+          throw new Error('No access token or user ID found');
+        }
+
+        const query = getTasksQuery(userId);
+        const data = await axiosQuery(token, query);    
+        setTasks(data.data.task); 
+      } catch (error: any) {
+        console.error('Error fetching tasks:', error.message);
+      }
+    };
+    fetchTasks();
+  }, []);
+
+
   return (
     <div className="px-20">
       <h1 className="mb-5 text-2xl font-semibold">Today</h1>
-      <AddNewTaskModal />
-      {
-        data?.task?.map((item: TTask) => <TodoItem key={item.task_id} task={item} />)
-      }
+      <AddNewTaskModal setTasks={setTasks}/>
+      {tasks?.map((item: TTask) => (
+        <TodoItem key={item.task_id} task={item} />
+      ))}
     </div>
   );
 }
+
+export default TodaysTaskPage;

@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
             credentials: {},
             async authorize(credentials: any): Promise<any> {
                 try {
-                    const hasuraEndPoint = process.env.HASURA_PROJECT_ENDPOINT as string;
+                    const hasuraEndPoint = process.env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT as string;
 
                     // Fetch all the user data from the server
                     const { data: result }: any = await axios.post(
@@ -94,12 +94,12 @@ export const authOptions: NextAuthOptions = {
                 const encodedToken = jsonwebtoken.sign(token, process.env.NEXTAUTH_SECRET as string, {
                     algorithm: "HS512",
                 });
-                
-                    session.user.id = token.sub!;
-                    session.user.name= token.name;
-                    session.accessToken = encodedToken;
 
-                
+                session.user.id = token.sub!;
+                session.user.name = token.name;
+                session.accessToken = encodedToken;
+
+
                 return session;
             } catch (error: any) {
                 console.error("Error in session callback:", error.message);

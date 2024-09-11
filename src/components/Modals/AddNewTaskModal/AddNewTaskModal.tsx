@@ -9,10 +9,17 @@ import {
   CategoryOptions,
   priorityOptions,
 } from "@/constant/selectOptions.constant";
+import axiosQuery from "@/lib/query/axiosQuery";
+// import { fetchGraphQL } from "@/lib/query/graphqlClient";
+import { addTasksQuery } from "@/lib/query/hasuraQuery";
+import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { IoMdAdd } from "react-icons/io";
+import { toast } from "sonner";
 
-const AddNewTaskModal = () => {
+const AddNewTaskModal = ({ setTasks }: any) => {
+  const { data: session } = useSession();
 
   // Open or close the modal
   const handleClick = (action: string) => {
@@ -27,8 +34,36 @@ const AddNewTaskModal = () => {
   };
 
   //function to submit the form
-  const onSubmit: SubmitHandler<FieldValues> = (values) => {
-    console.log(values);
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+    const toastId = toast.loading("Adding task, please wait...");
+
+    try {
+      const token = session?.accessToken;
+      const userId = session?.user?.id;
+
+      if (!token || !userId) {
+        throw new Error("No access token or user ID found");
+      }
+
+      const newTask = {
+        ...values,
+        due_date: dayjs(values?.due_date).format("YYYY-MM-DD"),
+        user_id: Number(userId),
+      };
+
+      const query = addTasksQuery(newTask);
+
+      const data = await axiosQuery(token, query);
+      const today = dayjs().format("YYYY-MM-DD");
+      if (data?.data?.insert_task_one?.due_date === today) {
+        setTasks((prevTasks:any) => [newTask,...prevTasks]);
+      }
+      toast.success("Task added Successfully", { id: toastId, duration: 2000 });
+      handleClick('close');
+    } catch (error: any) {
+      console.error("Error while adding task:", error.message);
+      toast.error(error.message, { id: toastId, duration: 2000 });
+    }
   };
 
   return (
@@ -72,17 +107,23 @@ const AddNewTaskModal = () => {
                   placeholder="Select Category"
                   options={CategoryOptions}
                 />
-                <TDatePicker name="due_date" label="Due Date" placeholder="select date"/>
+                <TDatePicker
+                  name="due_date"
+                  label="Due Date"
+                  placeholder="select date"
+                />
                 <TSelect
                   name="priority"
                   label="Priority"
                   placeholder="Select Priority"
                   options={priorityOptions}
                 />
-                
               </div>
             </div>
-            <button className="btn primary-btn hover:bg-[#004E7C] bg-[#0d6aa0] text-white" type="submit">
+            <button
+              className="btn primary-btn hover:bg-[#004E7C] bg-[#0d6aa0] text-white"
+              type="submit"
+            >
               Add Task
             </button>
             <button

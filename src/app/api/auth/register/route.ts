@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         }, { status: httpStatus.UNPROCESSABLE_ENTITY });
     }
 
-    const hasuraEndPoint: string = process.env.HASURA_PROJECT_ENDPOINT as string;
+    const hasuraEndPoint: string = process.env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT as string;
     const hasuraSecret = process.env.HASURA_ADMIN_SECRET;
 
     try {

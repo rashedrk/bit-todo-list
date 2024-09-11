@@ -32,16 +32,23 @@ export const getTasksQuery = (userId: string) => `
   }
 `;
 export const addTasksQuery = (task: any) => `
-  mutation MyMutation {
-  insert_task_one(object: ${task}) {
-    title
-    task_id
-    status
-    description
-    due_date
-    category
-    priority
-    user_id
+  mutation AddTasks {
+    insert_task_one(object: {
+      title: "${task.title}",
+      description: "${task.description}",
+      due_date: "${task.due_date}",
+      user_id: ${task.user_id},
+      priority: ${task.priority},
+      category: "${task.category}"
+    }) {
+      task_id
+      title
+      description
+      due_date
+      category
+      priority
+      user_id
+      status
+    }
   }
-}
 `;
