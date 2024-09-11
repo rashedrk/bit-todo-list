@@ -18,7 +18,7 @@ const RegisterPage = () => {
     const toastId= toast.loading("Creating account, please wait...");
     try {
       const res = await axios.post("/api/auth/register", values);
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.success) {
         router.push("/login");
         alert();
