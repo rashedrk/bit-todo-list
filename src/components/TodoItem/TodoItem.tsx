@@ -11,7 +11,7 @@ import { deleteTaskQuery, updateTaskStatusQuery } from "@/lib/query/hasuraQuery"
 
 const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
   const { data: session } = useSession();
-  console.log(task);
+  // console.log(task);
 
   const handleDeleteTask = async () => {
     const toastId = toast.loading("Deleting task, please wait...");
@@ -51,8 +51,10 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
       if (!token) {
         throw new Error("No access token or user ID found");
       }
+      // console.log(task);
+      
       const newStatus = task.status === "pending" ? "completed" : "pending"
-      const query = updateTaskStatusQuery(task.task_id, newStatus);
+      const query = updateTaskStatusQuery(task?.task_id, newStatus);
       const data = await axiosQuery(token, query);
 
       if (data.data.update_task_by_pk) {

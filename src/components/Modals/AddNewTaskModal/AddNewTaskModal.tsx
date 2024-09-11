@@ -55,8 +55,9 @@ const AddNewTaskModal = ({ setTasks }: any) => {
 
       const data = await axiosQuery(token, query);
       const today = dayjs().format("YYYY-MM-DD");
-      if (data?.data?.insert_task_one?.due_date === today) {
-        setTasks((prevTasks:any) => [newTask,...prevTasks]);
+      // if (data?.data?.insert_task_one?.due_date === today) {
+      if (data?.data?.insert_task_one) {
+        setTasks((prevTasks:any) => [data?.data?.insert_task_one,...prevTasks]);
       }
       toast.success("Task added Successfully", { id: toastId, duration: 2000 });
       handleClick('close');

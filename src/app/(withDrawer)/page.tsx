@@ -38,7 +38,7 @@ const TodaysTaskPage = () => {
 
   return (
     <div className="px-20">
-      <h1 className="mb-5 text-2xl font-semibold">Today</h1>
+      <h1 className="mb-5 text-2xl font-semibold">All Tasks</h1>
       <AddNewTaskModal setTasks={setTasks}/>
       {tasks?.map((item: TTask) => (
         <div key={item.task_id}>

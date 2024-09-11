@@ -15,7 +15,7 @@ export const loginQuery = {
 export const getTasksQuery = (userId: string) => `
   query GetTasks {
     task(where: {
-      user_id: { _eq: "${userId}" },isdeleted: {_eq: false}}, order_by: {created_at: asc}) {
+      user_id: { _eq: "${userId}" },isdeleted: {_eq: false}}, order_by: {due_date: asc}) {
       category
       created_at
       deleted_at
@@ -36,7 +36,7 @@ export const getTasksByIdQuery = (id: number) => `
     task(where: {
       task_id: { _eq: ${id} }, isdeleted: {_eq: false}
     }) {
-      category
+       category
       created_at
       deleted_at
       description
@@ -61,14 +61,18 @@ export const addTasksQuery = (task: any) => `
       priority: ${task.priority},
       category: "${task.category}"
     }) {
-      task_id
-      title
+       category
+      created_at
+      deleted_at
       description
       due_date
-      category
       priority
-      user_id
+      updated_at
+      isdeleted
       status
+      task_id
+      title
+      user_id
     }
   }
 `;
@@ -101,7 +105,7 @@ export const updateTaskQuery = (id: number, task: Partial<TTask>) => `
 
 `;
 
-export const updateTaskStatusQuery = (id: number, status:string) => `
+export const updateTaskStatusQuery = (id: number, status: string) => `
   mutation UpdateTaskStatus {
   update_task_by_pk(pk_columns: {task_id: ${id}}, _set: {status: ${status}}) {
     task_id
