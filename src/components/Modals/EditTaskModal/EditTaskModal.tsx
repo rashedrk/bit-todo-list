@@ -9,10 +9,27 @@ import {
   CategoryOptions,
   priorityOptions,
 } from "@/constant/selectOptions.constant";
+import axiosQuery from "@/lib/query/axiosQuery";
+import { updateTaskQuery } from "@/lib/query/hasuraQuery";
+import { TTask } from "@/types/global.type";
+import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { FaEdit } from "react-icons/fa";
+import { toast } from "sonner";
 
-const EditTaskModal = () => {
+const EditTaskModal = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
+  const { data: session } = useSession();
+
+  //values of the tasks
+  const defaultValues = {
+    title: task.title,
+    description: task.description,
+    category: task.category,
+    due_date: task.due_date,
+    priority: task.priority
+  };
+
   // Open or close the modal
   const handleClick = (action: string) => {
     const modal = document.getElementById(
@@ -26,18 +43,45 @@ const EditTaskModal = () => {
   };
 
   //function to submit the form
-  const onSubmit: SubmitHandler<FieldValues> = (values) => {
-    console.log(values);
+  const onSubmit: SubmitHandler<FieldValues> = async(values) => {
+    const editedTask = {
+      ...values,
+      due_date: dayjs(values.due_date).format("YYYY-MM-DD"),
+    };
+    
+
+    const toastId = toast.loading("Updating task, please wait...");
+
+    try {
+      const token = session?.accessToken;
+
+      if (!token) {
+        throw new Error("No access token found");
+      }
+
+      const query = updateTaskQuery(task.task_id, editedTask);
+
+      const data = await axiosQuery(token, query);
+      // console.log(data);
+      
+      if (data?.data?.update_task_by_pk) {
+        // Update the local state with the updated task
+        setTasks((prevTasks: any) => 
+          prevTasks.map((ptask:TTask) => ptask.task_id === data?.data?.update_task_by_pk.task_id ? data.data.update_task_by_pk : ptask)
+        );
+        
+      }
+      toast.success("Task added Successfully", { id: toastId, duration: 2000 });
+      handleClick('close');
+    } catch (error: any) {
+      console.error("Error while adding task:", error.message);
+      toast.error(error.message, { id: toastId, duration: 2000 });
+    }
+
   };
 
   return (
     <>
-      {/* <div
-        className="flex justify-start items-center gap-3 border p-4 rounded-lg cursor-pointer hover:bg-slate-50"
-        
-      >
-        <FaEdit className="text-gray-700 "/> Edit
-      </div> */}
       <li onClick={() => handleClick("open")}>
         <a>
           <FaEdit className="text-gray-700 " /> Edit
@@ -52,7 +96,7 @@ const EditTaskModal = () => {
           >
             ✕
           </button>
-          <TForm onSubmit={onSubmit}>
+          <TForm onSubmit={onSubmit} defaultValues={defaultValues}>
             <div className="mb-8">
               <TInput
                 placeholder="Enter task title"

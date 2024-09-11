@@ -12,7 +12,7 @@ const TodaysTaskPage = () => {
   const { data: session } = useSession();
   const [tasks, setTasks] = useState([]);
 
-  // console.log(session);
+  console.log("this is tasks",tasks);
   
 
   useEffect(() => {
@@ -41,7 +41,9 @@ const TodaysTaskPage = () => {
       <h1 className="mb-5 text-2xl font-semibold">Today</h1>
       <AddNewTaskModal setTasks={setTasks}/>
       {tasks?.map((item: TTask) => (
-        <TodoItem key={item.task_id} task={item} setTasks={setTasks} />
+        <div key={item.task_id}>
+          <TodoItem task={item} setTasks={setTasks} />
+        </div>
       ))}
     </div>
   );

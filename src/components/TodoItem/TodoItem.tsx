@@ -11,6 +11,8 @@ import { deleteTaskQuery } from "@/lib/query/hasuraQuery";
 
 const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
   const { data: session } = useSession();
+  console.log(task);
+  
 
   const handleDeleteTask = async () => {
     const toastId = toast.loading("Deleting task, please wait...");
@@ -21,13 +23,9 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
       if (!token) {
         throw new Error("No access token or user ID found");
       }
-
       const query = deleteTaskQuery(task.task_id);
-
       const data = await axiosQuery(token, query);
-      console.log(data);
       
-
       if(data.data.update_task_by_pk.task_id) {
         setTasks((prevTasks : any) =>
           prevTasks.filter((prevTask: TTask) => prevTask.task_id !== task.task_id)
@@ -84,7 +82,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
           tabIndex={0}
           className="dropdown-content menu bg-base-100 rounded-box z-[1] w-28 p-2 shadow"
         >
-          <EditTaskModal />
+          <EditTaskModal task={task} setTasks={setTasks} />
           <li onClick={handleDeleteTask}>
             <a>
               <MdAutoDelete className="text-gray-700 " /> Delete
