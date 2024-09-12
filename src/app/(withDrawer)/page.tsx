@@ -12,7 +12,7 @@ const TodaysTaskPage = () => {
   const { data: session } = useSession();
   const [tasks, setTasks] = useState([]);
 
-  console.log("this is tasks",tasks);
+  // console.log("this is tasks",tasks);
   
 
   useEffect(() => {

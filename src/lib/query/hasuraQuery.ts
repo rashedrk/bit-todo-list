@@ -15,15 +15,15 @@ export const loginQuery = {
 export const getTasksQuery = (userId: string) => `
   query GetTasks {
     task(where: {
-      user_id: { _eq: "${userId}" },isdeleted: {_eq: false}}, order_by: {due_date: asc}) {
+      user_id: { _eq: "${userId}" },}, order_by: {due_date: asc}) {
       category
       created_at
-      deleted_at
+      
       description
       due_date
       priority
       updated_at
-      isdeleted
+      
       status
       task_id
       title
@@ -34,16 +34,16 @@ export const getTasksQuery = (userId: string) => `
 export const getTasksByIdQuery = (id: number) => `
   query GetTaskById {
     task(where: {
-      task_id: { _eq: ${id} }, isdeleted: {_eq: false}
+      task_id: { _eq: ${id} }, 
     }) {
        category
       created_at
-      deleted_at
+      
       description
       due_date
       priority
       updated_at
-      isdeleted
+      
       status
       task_id
       title
@@ -63,12 +63,12 @@ export const addTasksQuery = (task: any) => `
     }) {
        category
       created_at
-      deleted_at
+      
       description
       due_date
       priority
       updated_at
-      isdeleted
+      
       status
       task_id
       title
@@ -78,10 +78,10 @@ export const addTasksQuery = (task: any) => `
 `;
 export const deleteTaskQuery = (id: number) => `
   mutation DeleteTask {
-  update_task_by_pk(pk_columns: {task_id: ${id}}, _set: {isdeleted: true}) {
+  update_task_by_pk(pk_columns: {task_id: ${id}}, _set: {: true}) {
     task_id
     title
-    isdeleted
+    
   }
 }
 `;
@@ -90,11 +90,11 @@ export const updateTaskQuery = (id: number, task: Partial<TTask>) => `
   update_task_by_pk(pk_columns: {task_id: ${id}}, _set: {category: "${task.category}", description: "${task.description}", due_date: "${task.due_date}", priority: "${task.priority}", title:" ${task.title}"}) {
     task_id
     title
-    isdeleted
+    
     user_id
     category
     created_at
-    deleted_at
+    
     description
     due_date
     priority
@@ -111,6 +111,24 @@ export const updateTaskStatusQuery = (id: number, status: string) => `
     task_id
     title
     status
+  }
+}
+`;
+
+export const getDeletedTasksQuery = (userId: string) => `
+  query GetDeletedTasks {
+  trash_task(order_by: {due_date: desc}, where: {user_id: {_eq: ${userId}}}) {
+    category
+    created_at
+    description
+    deleted_at
+    due_date
+    priority
+    status
+    task_id
+    title
+    updated_at
+    user_id
   }
 }
 `;

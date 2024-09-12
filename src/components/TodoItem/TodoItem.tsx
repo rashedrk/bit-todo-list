@@ -77,7 +77,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
   return (
     <div className="flex justify-between items-center border-b px-2 py-3 hover:bg-slate-50">
       <div className="flex gap-5 items-start">
-        <div>
+        <div className={task?.deleted_at && "hidden"}>
           <input
             type="checkbox"
             className="checkbox checkbox-xs mt-1 cursor-pointer"
