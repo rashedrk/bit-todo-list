@@ -12,14 +12,18 @@ import {
 import axiosQuery from "@/lib/query/axiosQuery";
 // import { fetchGraphQL } from "@/lib/query/graphqlClient";
 import { addTasksQuery } from "@/lib/query/hasuraQuery";
+import { getDescription } from "@/services/actions/getDescription";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { IoMdAdd } from "react-icons/io";
 import { toast } from "sonner";
 
 const AddNewTaskModal = ({ setTasks }: any) => {
   const { data: session } = useSession();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("")
 
   // Open or close the modal
   const handleClick = (action: string) => {
@@ -32,6 +36,34 @@ const AddNewTaskModal = ({ setTasks }: any) => {
       modal.close();
     }
   };
+
+
+//getting the title from the input and setting it to the state
+//so that we can call the ai api with title
+  const handleOnChange = (event:React.FocusEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  //here we using set timeout to get the total value of title after writing is finished
+  //then we call for the sdk and get the description
+  useEffect(() => {
+    if (!title) return; // Avoid running effect if title is empty
+
+    const timeoutId = setTimeout(async () => {
+      try {
+        const { text } = await getDescription(title);
+        setDescription(text);
+      } catch (error) {
+        console.error('Error fetching description:', error);
+      }
+    }, 1500);
+
+    return () => clearTimeout(timeoutId);
+  }, [title]);
+
+  
+console.log(description);
+
 
   //function to submit the form
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
@@ -57,10 +89,13 @@ const AddNewTaskModal = ({ setTasks }: any) => {
       const today = dayjs().format("YYYY-MM-DD");
       // if (data?.data?.insert_task_one?.due_date === today) {
       if (data?.data?.insert_task_one) {
-        setTasks((prevTasks:any) => [data?.data?.insert_task_one,...prevTasks]);
+        setTasks((prevTasks: any) => [
+          data?.data?.insert_task_one,
+          ...prevTasks,
+        ]);
       }
       toast.success("Task added Successfully", { id: toastId, duration: 2000 });
-      handleClick('close');
+      handleClick("close");
     } catch (error: any) {
       console.error("Error while adding task:", error.message);
       toast.error(error.message, { id: toastId, duration: 2000 });
@@ -88,13 +123,26 @@ const AddNewTaskModal = ({ setTasks }: any) => {
           </button>
           <TForm onSubmit={onSubmit}>
             <div className="mb-8">
-              <TInput
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">Title</span>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Enter task title"
+                  onChange={handleOnChange}
+                  
+                  className={`input input-bordered w-full input-md mb-2`}
+                />
+              </label>
+
+              {/* <TInput
                 placeholder="Enter task title"
                 label="Title"
                 name="title"
                 type="text"
                 className="mb-2"
-              />
+              /> */}
               <TTextArea
                 placeholder="Enter task description"
                 label="Description"
