@@ -1,5 +1,6 @@
 "use client";
 
+import Loader from "@/components/Loader/Loader";
 import TodoItem from "@/components/TodoItem/TodoItem";
 import axiosQuery from "@/lib/query/axiosQuery";
 import { getDeletedTasksQuery } from "@/lib/query/hasuraQuery";
@@ -10,6 +11,7 @@ import { useEffect, useState } from "react";
 const TrashBinPage = () => {
   const { data: session } = useSession();
   const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -24,18 +26,23 @@ const TrashBinPage = () => {
         const query = getDeletedTasksQuery(userId);
         const data = await axiosQuery(token, query);
         // console.log(data);
-        
+
         setTasks(data.data.trash_task);
+        setIsLoading(false);
       } catch (error: any) {
         console.error("Error fetching tasks:", error.message);
       }
     };
     fetchTasks();
   }, []);
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div>
       <div className="px-20">
-        <h1 className="mb-5 text-2xl font-semibold">Deleted Tasks - {tasks.length}</h1>
+        <h1 className="mb-5 text-2xl font-semibold">
+          Deleted Tasks - {tasks.length}
+        </h1>
         {tasks?.map((item: TTask) => (
           <div key={item.task_id}>
             <TodoItem task={item} setTasks={setTasks} />
