@@ -9,15 +9,15 @@ export const sidebarTasks = [
     path: "/",
   },
   {
-    icon: <FaCheckDouble className="text-gray-500" />,
+    icon: <MdOutlineDoubleArrow className="text-gray-500" />,
     label: "Today",
     path: "/today",
   },
-  {
-    icon: <MdOutlineDoubleArrow className="text-gray-500" />,
-    label: "Upcoming",
-    path: "/upcoming",
-  },
+  // {
+  //   icon: <MdOutlineDoubleArrow className="text-gray-500" />,
+  //   label: "Upcoming",
+  //   path: "/upcoming",
+  // },
   {
     icon: <FaTrashAlt className="text-gray-500" />,
     label: "Trash Bin",

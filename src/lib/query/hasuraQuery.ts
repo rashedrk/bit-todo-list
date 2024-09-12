@@ -31,6 +31,25 @@ export const getTasksQuery = (userId: string) => `
     }
   }
 `;
+export const getTodayTasksQuery = (userId: string, today: string) => `
+  query GetTasks {
+    task(where: {
+      user_id: { _eq: "${userId}" }, due_date: {_eq: "${today}"}}, order_by: {due_date: asc}) {
+      category
+      created_at
+      
+      description
+      due_date
+      priority
+      updated_at
+      
+      status
+      task_id
+      title
+      user_id
+    }
+  }
+`;
 export const getTasksByIdQuery = (id: number) => `
   query GetTaskById {
     task(where: {
