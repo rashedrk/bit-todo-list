@@ -13,40 +13,40 @@ const TodaysTaskPage = () => {
   const [tasks, setTasks] = useState([]);
 
   // console.log("this is tasks",tasks);
-  
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const token = session?.accessToken; 
+        const token = session?.accessToken;
         const userId = session?.user?.id;
 
         if (!token || !userId) {
-          throw new Error('No access token or user ID found');
+          throw new Error("No access token or user ID found");
         }
 
         const query = getTasksQuery(userId);
-        const data = await axiosQuery(token, query);    
-        setTasks(data.data.task); 
+        const data = await axiosQuery(token, query);
+        setTasks(data.data.task);
       } catch (error: any) {
-        console.error('Error fetching tasks:', error.message);
+        console.error("Error fetching tasks:", error.message);
       }
     };
     fetchTasks();
   }, []);
 
-
   return (
-    <div className="px-20">
-      <h1 className="mb-5 text-2xl font-semibold">All Tasks</h1>
-      <AddNewTaskModal setTasks={setTasks}/>
-      {tasks?.map((item: TTask) => (
-        <div key={item.task_id}>
-          <TodoItem task={item} setTasks={setTasks} />
-        </div>
-      ))}
+    <div className="px-5">
+      <h1 className="mb-5 text-2xl font-semibold">All Tasks - <span className="">{tasks.length}</span></h1>
+      <div className="bg-slate-50 px-10 py-5">
+        <AddNewTaskModal setTasks={setTasks} />
+        {tasks?.map((item: TTask) => (
+          <div key={item.task_id}>
+            <TodoItem task={item} setTasks={setTasks} />
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default TodaysTaskPage;

@@ -1,4 +1,4 @@
-import { FaCalendarDay } from "react-icons/fa6";
+import { FaCalendarDay, FaFlag } from "react-icons/fa6";
 import { MdAutoDelete } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 import EditTaskModal from "../Modals/EditTaskModal/EditTaskModal";
@@ -7,7 +7,11 @@ import { capitalize } from "lodash";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import axiosQuery from "@/lib/query/axiosQuery";
-import { deleteTaskQuery, permanentDeleteTaskQuery, updateTaskStatusQuery } from "@/lib/query/hasuraQuery";
+import {
+  deleteTaskQuery,
+  permanentDeleteTaskQuery,
+  updateTaskStatusQuery,
+} from "@/lib/query/hasuraQuery";
 
 const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
   const { data: session } = useSession();
@@ -56,7 +60,6 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
       const query = permanentDeleteTaskQuery(task.task_id);
       const data = await axiosQuery(token, query);
       // console.log(data);
-      
 
       if (data.data.delete_trash_task_by_pk.task_id) {
         setTasks((prevTasks: any) =>
@@ -77,7 +80,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
     }
   };
 
-  const updateTaskStatus = async() => {
+  const updateTaskStatus = async () => {
     try {
       const token = session?.accessToken;
 
@@ -85,8 +88,8 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
         throw new Error("No access token or user ID found");
       }
       // console.log(task);
-      
-      const newStatus = task.status === "pending" ? "completed" : "pending"
+
+      const newStatus = task.status === "pending" ? "completed" : "pending";
       const query = updateTaskStatusQuery(task?.task_id, newStatus);
       const data = await axiosQuery(token, query);
 
@@ -94,7 +97,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
         setTasks((prevTasks: TTask[]) =>
           prevTasks.map((prevTask: TTask) =>
             prevTask.task_id === task.task_id
-              ? { ...prevTask, status: newStatus } 
+              ? { ...prevTask, status: newStatus }
               : prevTask
           )
         );
@@ -108,20 +111,40 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
   };
 
   return (
-    <div className="flex justify-between items-center border-b px-2 py-3 hover:bg-slate-50">
+    <div className="flex justify-between items-center border-b px-2 py-3">
       <div className="flex gap-5 items-start">
         <div className={task?.deleted_at && "hidden"}>
           <input
             type="checkbox"
             className="checkbox checkbox-xs mt-1 cursor-pointer"
-            checked={task?.status === 'completed'}
+            checked={task?.status === "completed"}
             onClick={updateTaskStatus}
           />
         </div>
         <div>
-          <p className={task.status === "completed" ? "line-through text-gray-300": "text-gray-800"}>{capitalize(task?.title)}</p>
-          <p className={` text-xs ${task.status === "completed" ? "line-through text-gray-200": "text-gray-600"}`}>{task?.description}</p>
-          <div className={`flex gap-5 mt-2 text-xs text-gray-800 ${task.status === "completed" && "hidden"}`}>
+          <p
+            className={
+              task.status === "completed"
+                ? "line-through text-gray-300"
+                : "text-gray-800"
+            }
+          >
+            {capitalize(task?.title)}
+          </p>
+          <p
+            className={` text-xs ${
+              task.status === "completed"
+                ? "line-through text-gray-200"
+                : "text-gray-500"
+            }`}
+          >
+            {task?.description}
+          </p>
+          <div
+            className={`flex gap-5 mt-2 text-xs text-gray-800 ${
+              task.status === "completed" && "hidden"
+            }`}
+          >
             <div className="flex gap-2 items-center justify-start">
               <FaCalendarDay className="text-gray-600" />
               <p>{task?.due_date}</p>
@@ -138,6 +161,18 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
               ></div>
               <p>{capitalize(task?.category)}</p>
             </div>
+            <div className="flex justify-start items-center gap-2 border-l-2 ps-4">
+              <FaFlag
+                className={
+                  task?.priority === "high"
+                    ? "text-red-500"
+                    : task?.priority === "medium"
+                    ? "text-yellow-500"
+                    : "text-green-500"
+                }
+              />
+              <p>{capitalize(task?.priority)}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -150,7 +185,11 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
           className="dropdown-content menu bg-base-100 rounded-box z-[1] w-28 p-2 shadow"
         >
           <EditTaskModal task={task} setTasks={setTasks} />
-          <li onClick={task?.isdeleted ?handleDeleteTask: handlePermanentDeleteTask}>
+          <li
+            onClick={
+              task?.isdeleted ? handleDeleteTask : handlePermanentDeleteTask
+            }
+          >
             <a>
               <MdAutoDelete className="text-gray-700 " /> Delete
             </a>
