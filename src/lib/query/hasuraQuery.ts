@@ -78,7 +78,7 @@ export const addTasksQuery = (task: any) => `
 `;
 export const deleteTaskQuery = (id: number) => `
   mutation DeleteTask {
-  update_task_by_pk(pk_columns: {task_id: ${id}}, _set: {: true}) {
+  delete_task_by_pk(task_id: ${id}) {
     task_id
     title
     
@@ -129,6 +129,16 @@ export const getDeletedTasksQuery = (userId: string) => `
     title
     updated_at
     user_id
+  }
+}
+`;
+
+export const permanentDeleteTaskQuery = (id: number) => `
+  mutation PermanentDeleteTask {
+  delete_trash_task_by_pk(task_id: ${id}) {
+    task_id
+    title
+    
   }
 }
 `;

@@ -7,7 +7,7 @@ import { capitalize } from "lodash";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import axiosQuery from "@/lib/query/axiosQuery";
-import { deleteTaskQuery, updateTaskStatusQuery } from "@/lib/query/hasuraQuery";
+import { deleteTaskQuery, permanentDeleteTaskQuery, updateTaskStatusQuery } from "@/lib/query/hasuraQuery";
 
 const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
   const { data: session } = useSession();
@@ -25,7 +25,40 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
       const query = deleteTaskQuery(task.task_id);
       const data = await axiosQuery(token, query);
 
-      if (data.data.update_task_by_pk.task_id) {
+      if (data.data.delete_task_by_pk.task_id) {
+        setTasks((prevTasks: any) =>
+          prevTasks.filter(
+            (prevTask: TTask) => prevTask.task_id !== task.task_id
+          )
+        );
+        toast.success("Task deleted Successfully", {
+          id: toastId,
+          duration: 2000,
+        });
+      } else {
+        toast.error("Invalid task", { id: toastId, duration: 2000 });
+      }
+    } catch (error: any) {
+      console.error("Error while deleting task:", error.message);
+      toast.error(error.message, { id: toastId, duration: 2000 });
+    }
+  };
+
+  const handlePermanentDeleteTask = async () => {
+    const toastId = toast.loading("Deleting task, please wait...");
+
+    try {
+      const token = session?.accessToken;
+
+      if (!token) {
+        throw new Error("No access token or user ID found");
+      }
+      const query = permanentDeleteTaskQuery(task.task_id);
+      const data = await axiosQuery(token, query);
+      // console.log(data);
+      
+
+      if (data.data.delete_trash_task_by_pk.task_id) {
         setTasks((prevTasks: any) =>
           prevTasks.filter(
             (prevTask: TTask) => prevTask.task_id !== task.task_id
@@ -117,7 +150,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
           className="dropdown-content menu bg-base-100 rounded-box z-[1] w-28 p-2 shadow"
         >
           <EditTaskModal task={task} setTasks={setTasks} />
-          <li onClick={handleDeleteTask}>
+          <li onClick={task?.isdeleted ?handleDeleteTask: handlePermanentDeleteTask}>
             <a>
               <MdAutoDelete className="text-gray-700 " /> Delete
             </a>
