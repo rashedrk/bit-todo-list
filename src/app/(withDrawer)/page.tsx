@@ -11,6 +11,9 @@ import { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
 import "./pagination.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import dayjs from "dayjs";
 
 const TodaysTaskPage = () => {
   const { data: session } = useSession();
@@ -18,18 +21,11 @@ const TodaysTaskPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
-  const [offset, setOffset] = useState(0);
-
-  // console.log("this is tasks",tasks);
+  const [date, setDate] = useState<Date | null>();
+  const [sortOrder, setSortOrder] = useState("");
 
   //total page = total item / limit
   const totalPages = Math.ceil(count / 10);
-  // const handlePageChange = (newPage: number) => {
-  //   setPage(newPage);
-  //   // offset = (page num - 1) * limit
-  //   const offset = (page - 1) * 10;
-  //   setOffset(offset);
-  // };
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -42,7 +38,8 @@ const TodaysTaskPage = () => {
         }
         // offset = (page num - 1) * limit
         const offset = (page - 1) * 10;
-        const query = getTasksQuery(userId, offset);
+        const filterDate = date ? dayjs(date).format('YYYY-MM-DD') : "";
+        const query = getTasksQuery(userId, offset, sortOrder, filterDate);
         const data = await axiosQuery(token, query);
         setTasks(data.data.task);
         setCount(data.data.task_aggregate.aggregate.count);
@@ -52,7 +49,11 @@ const TodaysTaskPage = () => {
       }
     };
     fetchTasks();
-  }, [page]);
+  }, [page, date, sortOrder]);
+
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOrder(event.target.value);
+  };
 
   return isLoading ? (
     <Loader />
@@ -62,7 +63,31 @@ const TodaysTaskPage = () => {
         All Tasks - <span className="">{count}</span>
       </h1>
       <div className="bg-slate-50 px-10 py-5">
-        <AddNewTaskModal setTasks={setTasks} />
+        <div className="flex gap-5 items-center mb-5">
+          <div className="w-2/3">
+            <AddNewTaskModal setTasks={setTasks} />
+          </div>
+          <div className="w-1/3 flex gap-2">
+            <DatePicker
+              selected={date}
+              onChange={(date) => setDate(date)}
+              className={`input input-bordered w-full input-md }`}
+              placeholderText={"Filter by Date"}
+              dateFormat="dd-MM-yyyy"
+            />
+            <select
+              className="select select-bordered"
+              onChange={handleSortChange}
+              value={sortOrder}
+            >
+              <option value="" disabled selected>
+                Sort by Date
+              </option>
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </div>
+        </div>
         {tasks?.map((item: TTask) => (
           <div key={item.task_id}>
             <TodoItem task={item} setTasks={setTasks} />

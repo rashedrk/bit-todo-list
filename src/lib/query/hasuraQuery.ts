@@ -12,10 +12,17 @@ export const loginQuery = {
                         }`,
 };
 
-export const getTasksQuery = (userId: string, offset: number) => `
+export const getTasksQuery = (userId: string, offset: number, sortOrder: string, filterDate: string) => `
   query GetTasks {
-    task(where: {
-      user_id: { _eq: "${userId}" }}, order_by: {created_at: desc}, limit: 10, offset:${offset}) 
+    task(
+      where: {
+        user_id: { _eq: "${userId}" },
+        ${filterDate ? `due_date: { _eq: "${filterDate}" }` : ""}
+      },
+      order_by: { due_date: ${sortOrder ? sortOrder : "asc"} },
+      limit: 10,
+      offset: ${offset}
+    )
       {
         category
         created_at
@@ -28,7 +35,13 @@ export const getTasksQuery = (userId: string, offset: number) => `
         title
         user_id
     }
-    task_aggregate(where: {user_id: {_eq: "${userId}"}}) {
+    task_aggregate(
+      where: {
+        user_id: { _eq: "${userId}" },
+        ${filterDate ? `due_date: { _eq: "${filterDate}" }` : ""}
+      },
+      order_by: { due_date: ${sortOrder ? sortOrder : "asc"} },
+      ) {
           aggregate {
             count
           }
