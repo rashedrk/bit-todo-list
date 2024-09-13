@@ -74,7 +74,7 @@ export const addTasksQuery = (task: any) => `
   mutation AddTasks {
     insert_task_one(object: {
       title: "${task.title}",
-      description: "${task.description}",
+      description: "${task.description.replace(/"/g, '\\"').replace(/\n/g, '\\n')}",
       due_date: "${task.due_date}",
       user_id: ${task.user_id},
       priority: ${task.priority},

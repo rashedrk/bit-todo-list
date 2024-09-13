@@ -71,7 +71,7 @@ const AddNewTaskModal = ({ setTasks }: any) => {
 
       const newTask = {
         ...values,
-        description: description.replace(/"/g, '\\"').replace(/\n/g, '\\n'),
+        description: values.description || description,
         due_date: dayjs(values?.due_date).format("YYYY-MM-DD"),
         user_id: Number(userId),
       };
