@@ -121,7 +121,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
         <div className={task?.deleted_at && "hidden"}>
           <input
             type="checkbox"
-            className="checkbox checkbox-xs mt-1 cursor-pointer checkbox-success"
+            className="checkbox checkbox-xs mt-1 cursor-pointer checkbox-success border-[#004E7C]"
             checked={task?.status === "completed"}
             onClick={updateTaskStatus}
           />

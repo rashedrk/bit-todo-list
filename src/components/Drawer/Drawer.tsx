@@ -15,7 +15,7 @@ const Drawer = ({ children }: { children: ReactNode }) => {
       <div className="drawer-content  flex flex-col">
         {/* Navbar */}
         <div className="navbar  lg:hidden  px-4">
-          <div className="flex-none ">
+          <div className="flex-none lg:hidden">
             <label
               htmlFor="my-drawer-3"
               aria-label="open sidebar"
@@ -42,7 +42,7 @@ const Drawer = ({ children }: { children: ReactNode }) => {
         <div className="p-4 w-screen lg:w-full">{children}</div>
       </div>
 
-      <div className="drawer-side bg-[#F2F4F7]">
+      <div className="drawer-side">
         <label
           htmlFor="my-drawer-3"
           aria-label="close sidebar"
@@ -56,7 +56,7 @@ const Drawer = ({ children }: { children: ReactNode }) => {
             Bit<span className="text-gray-700">Todo</span>
           </Link>
         </div>
-        <ul className="menu   w-52 p-4 border-e">
+        <ul className="menu min-h-[90vh]  w-52 p-4 border-e">
           <div className="flex justify-start mb-3 md:hidden border-b">
             <Link
               href="/"

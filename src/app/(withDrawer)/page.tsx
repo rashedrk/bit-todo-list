@@ -58,16 +58,16 @@ const TodaysTaskPage = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <div className="px-5">
+    <div className="md:px-5">
       <h1 className="mb-5 text-2xl font-semibold">
         All Tasks - <span className="">{count}</span>
       </h1>
-      <div className="bg-slate-50 px-10 py-5">
+      <div className="bg-slate-50 md:px-10 px-1 py-5">
         <div className="flex gap-5 items-center mb-5">
-          <div className="w-2/3">
+          <div className="md:w-2/3 w-1/2">
             <AddNewTaskModal setTasks={setTasks} />
           </div>
-          <div className="w-1/3 flex gap-2">
+          <div className="md:w-1/3 w-1/2 flex gap-2">
             <DatePicker
               selected={date}
               onChange={(date) => setDate(date)}
