@@ -17,6 +17,8 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
   const { data: session } = useSession();
   // console.log(task);
 
+
+  //this will move the data into trash table / trash page
   const handleDeleteTask = async () => {
     const toastId = toast.loading("Deleting task, please wait...");
 
@@ -48,6 +50,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
     }
   };
 
+  //this will permanently delete the data from trash table/ trash folder
   const handlePermanentDeleteTask = async () => {
     const toastId = toast.loading("Deleting task, please wait...");
 
@@ -80,6 +83,8 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
     }
   };
 
+
+  //this will update the current status of the task ex: "completed", "pending"
   const updateTaskStatus = async () => {
     try {
       const token = session?.accessToken;

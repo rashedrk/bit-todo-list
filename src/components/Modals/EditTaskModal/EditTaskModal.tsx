@@ -46,13 +46,10 @@ const EditTaskModal = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
 
   //function to submit the form
   const onSubmit: SubmitHandler<FieldValues> = async(values) => {
-    const editedTask = {
-      ...values,
-      due_date: dayjs(values.due_date).format("YYYY-MM-DD"),
-    };
-    
-
     const toastId = toast.loading("Updating task, please wait...");
+
+    console.log(values);
+    
 
     try {
       const token = session?.accessToken;
@@ -61,7 +58,7 @@ const EditTaskModal = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
         throw new Error("No access token found");
       }
 
-      const query = updateTaskQuery(task.task_id, editedTask);
+      const query = updateTaskQuery(task.task_id, values);
 
       const data = await axiosQuery(token, query);
       // console.log(data);
@@ -71,9 +68,12 @@ const EditTaskModal = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
         setTasks((prevTasks: any) => 
           prevTasks.map((ptask:TTask) => ptask.task_id === data?.data?.update_task_by_pk.task_id ? data.data.update_task_by_pk : ptask)
         );
-        
+        toast.success("Task updated Successfully", { id: toastId, duration: 2000 });
       }
-      toast.success("Task added Successfully", { id: toastId, duration: 2000 });
+      else {
+        toast.error("Something went wrong!", { id: toastId, duration: 2000 });
+      }
+      
       handleClick('close');
     } catch (error: any) {
       console.error("Error while adding task:", error.message);

@@ -74,7 +74,7 @@ export const addTasksQuery = (task: any) => `
   mutation AddTasks {
     insert_task_one(object: {
       title: "${task.title}",
-      description: "${task.description.replace(/"/g, '\\"').replace(/\n/g, '\\n')}",
+      description: "${task.description.replace(/\n/g, '')}",
       due_date: "${task.due_date}",
       user_id: ${task.user_id},
       priority: ${task.priority},
@@ -106,7 +106,7 @@ export const deleteTaskQuery = (id: number) => `
 `;
 export const updateTaskQuery = (id: number, task: Partial<TTask>) => `
   mutation UpdateTask {
-  update_task_by_pk(pk_columns: {task_id: ${id}}, _set: {category: "${task.category}", description: "${task.description}", due_date: "${task.due_date}", priority: "${task.priority}", title:" ${task.title}"}) {
+  update_task_by_pk(pk_columns: {task_id: ${id}}, _set: {category: "${task.category}", description: "${task?.description?.replace(/\n/g, '')}", due_date: "${task.due_date}", priority: "${task.priority}", title:" ${task.title}"}) {
     task_id
     title
     
