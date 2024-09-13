@@ -10,6 +10,8 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from 'next/navigation'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { credentialSchema } from "@/schema/credential.schema";
 
 const LoginPage = () => {
   const router = useRouter()
@@ -55,58 +57,23 @@ const LoginPage = () => {
           <h2 className="text-2xl font-bold uppercase text-center mb-5">
             Login<span className="text-[#004E7C]"> Here !</span>
           </h2>
-          <TForm onSubmit={handleLogin}>
+          <TForm onSubmit={handleLogin} resolver={zodResolver(credentialSchema)}>
             <TInput
               type="email"
               name="email"
               placeholder="Enter your email"
-              className="mb-4"
             />
             <TInput
               type="password"
               name="password"
               placeholder="Enter your Password"
+              className="mt-4"
             />
             <button className="btn primary-btn mt-4 w-full">
               <MdLogin className="text-xl" />
               Login{" "}
             </button>
           </TForm>
-          {/* <div className="divider text-sm my-3">OR</div>
-          <div className="flex gap-5 justify-center items-center">
-            <div
-              className="cursor-pointer"
-              onClick={() =>
-                signIn("google", {
-                  callbackUrl: "http://localhost:3000/",
-                })
-              }
-            >
-              <Image
-                src={googleImg}
-                alt=""
-                width={50}
-                height={50}
-                className=" rounded-lg "
-              />
-            </div>
-            <div
-              className="cursor-pointer"
-              onClick={() =>
-                signIn("github", {
-                  callbackUrl: "http://localhost:3000/",
-                })
-              }
-            >
-              <Image
-                src={githubImg}
-                alt=""
-                width={34}
-                height={34}
-                className=" rounded-lg "
-              />
-            </div>
-          </div> */}
           <div className="mt-3 flex gap-2 text-sm mb-3">
             <p>Dont have an account?</p>
             <Link href="/register">Register</Link>

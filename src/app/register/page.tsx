@@ -10,6 +10,8 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { userSchema } from "@/schema/user.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -44,29 +46,29 @@ const RegisterPage = () => {
           <h2 className="text-2xl font-bold uppercase text-center mb-5">
             Register<span className="text-[#004E7C]"> Here !</span>
           </h2>
-          <TForm onSubmit={handleRegister}>
+          <TForm onSubmit={handleRegister} resolver={zodResolver(userSchema)}>
             <TInput
               type="text"
               name="username"
               placeholder="Enter an username"
-              className="mb-4"
             />
             <TInput
               type="email"
               name="email"
               placeholder="Enter an email"
-              className="mb-4"
+              className="mt-4"
             />
             <TInput
               type="password"
               name="password"
               placeholder="Enter a Password"
-              className="mb-4"
+              className="mt-4"
             />
             <TInput
               type="password"
               name="confirmPassword"
               placeholder="Enter Password again"
+              className="mt-4"
             />
             <button className="btn primary-btn mt-4 w-full">
               <MdLogin className="text-xl" />
