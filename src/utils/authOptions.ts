@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {},
-            async authorize(credentials: any): Promise<any> {
+            async authorize(credentials: any, eq: any): Promise<any> {
                 try {
                     const hasuraEndPoint = process.env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT as string;
 
@@ -59,7 +59,8 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     pages: {
-        signIn: '/login'
+        signIn: '/login',
+        signOut: '/login'
     },
     secret: process.env.NEXTAUTH_SECRET,
     jwt: {

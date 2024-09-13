@@ -1,14 +1,15 @@
-'use client'
+"use client";
 
 import { sidebarGenerator } from "@/utils/SidebarGenerator";
 import { sidebarTasks } from "@/constant/sidebar.constant";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
-import './drawer.css'
+import "./drawer.css";
+import { signOut } from "next-auth/react";
 
 const Drawer = ({ children }: { children: ReactNode }) => {
-    const pathname = usePathname();
+  const pathname = usePathname();
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
@@ -36,7 +37,6 @@ const Drawer = ({ children }: { children: ReactNode }) => {
               </svg>
             </label>
           </div>
-         
         </div>
         {/* Page content here */}
         <div className="p-4 w-screen lg:w-full">{children}</div>
@@ -48,16 +48,16 @@ const Drawer = ({ children }: { children: ReactNode }) => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        
+
         <ul className="menu min-h-[100vh] bg-[#F2F4F7]  w-52 p-4 border-e">
-        <div className="md:flex justify-start   hidden border-e">
-          <Link
-            href="/"
-            className="btn btn-ghost hover:bg-transparent normal-case  font-[800] text-xl text-[#004E7C] "
-          >
-            Bit<span className="text-gray-700">Todo</span>
-          </Link>
-        </div>
+          <div className="md:flex justify-start   hidden border-e">
+            <Link
+              href="/"
+              className="btn btn-ghost hover:bg-transparent normal-case  font-[800] text-xl text-[#004E7C] "
+            >
+              Bit<span className="text-gray-700">Todo</span>
+            </Link>
+          </div>
           <div className="flex justify-start mb-3 md:hidden border-b">
             <Link
               href="/"
@@ -70,7 +70,9 @@ const Drawer = ({ children }: { children: ReactNode }) => {
           <li className="text-xs text-gray-600 font-semibold mb-1">TASKS</li>
           {sidebarGenerator(sidebarTasks, pathname)}
         </ul>
+        <div onClick={() => signOut()}>Singout</div>
       </div>
+
     </div>
   );
 };

@@ -24,7 +24,9 @@ const LoginPage = () => {
         redirect: false, // Prevent automatic redirection to handle error display
         email: values.email,
         password: values.password,
-      });
+        callbackUrl: '/'
+      },
+    );
 
       if (result?.error) {
         console.error("Error during login:", result.error);
