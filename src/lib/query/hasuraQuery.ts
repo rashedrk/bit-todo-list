@@ -12,23 +12,27 @@ export const loginQuery = {
                         }`,
 };
 
-export const getTasksQuery = (userId: string) => `
+export const getTasksQuery = (userId: string, offset: number) => `
   query GetTasks {
     task(where: {
-      user_id: { _eq: "${userId}" },}, order_by: {created_at: desc}) {
-      category
-      created_at
-      
-      description
-      due_date
-      priority
-      updated_at
-      
-      status
-      task_id
-      title
-      user_id
+      user_id: { _eq: "${userId}" }}, order_by: {created_at: desc}, limit: 10, offset:${offset}) 
+      {
+        category
+        created_at
+        description
+        due_date
+        priority
+        updated_at
+        status
+        task_id
+        title
+        user_id
     }
+    task_aggregate(where: {user_id: {_eq: "${userId}"}}) {
+          aggregate {
+            count
+          }
+  }
   }
 `;
 export const getTodayTasksQuery = (userId: string, today: string) => `
