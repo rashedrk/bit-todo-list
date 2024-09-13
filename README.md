@@ -47,7 +47,7 @@ NEXTAUTH_URL=http://localhost:3000/
 NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=your hasura project url
 HASURA_ADMIN_SECRET=your hasura admin secret
 NEXTAUTH_SECRET=your secret key (base64)
-SALT_ROUNDS=your salt round number for becrypt
+SALT_ROUNDS=your salt round number (bcrypt)
 GOOGLE_GENERATIVE_AI_API_KEY=you google generative ai api key
 
 ```
