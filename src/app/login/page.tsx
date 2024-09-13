@@ -6,8 +6,6 @@ import Image from "next/image";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { MdLogin } from "react-icons/md";
 import taskImg from "@/assets/task.jpg";
-// import googleImg from "@/assets/google.png";
-// import githubImg from "@/assets/github.png";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "sonner";

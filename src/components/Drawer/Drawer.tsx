@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import "./drawer.css";
 import { signOut } from "next-auth/react";
+import { PiSignOutBold } from "react-icons/pi";
 
 const Drawer = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
@@ -49,7 +50,7 @@ const Drawer = ({ children }: { children: ReactNode }) => {
           className="drawer-overlay"
         ></label>
 
-        <ul className="menu min-h-[100vh] bg-[#F2F4F7]  w-52 p-4 border-e">
+        <ul className="menu min-h-[90vh] bg-[#F2F4F7]  w-52 p-4 border-e">
           <div className="md:flex justify-start   hidden border-e">
             <Link
               href="/"
@@ -70,7 +71,7 @@ const Drawer = ({ children }: { children: ReactNode }) => {
           <li className="text-xs text-gray-600 font-semibold mb-1">TASKS</li>
           {sidebarGenerator(sidebarTasks, pathname)}
         </ul>
-        <div onClick={() => signOut()}>Singout</div>
+        <div className="flex justify-center items-center gap-2 cursor-pointer text-sm btn" onClick={() => signOut()}><PiSignOutBold />Log out</div>
       </div>
 
     </div>
