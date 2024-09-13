@@ -5,8 +5,10 @@ type TTextAreaProps = {
     placeholder?: string;
     disabled?: boolean;
     className?: string;
+    defaultValue?: string;
+    loading?: boolean;
   };
-const TTextArea = ({ name, label, placeholder, disabled = false, className }: TTextAreaProps) => {
+const TTextArea = ({ name, label, placeholder, disabled = false, className, defaultValue, loading = false }: TTextAreaProps) => {
     const { control } = useFormContext();
 
     return (
@@ -22,9 +24,12 @@ const TTextArea = ({ name, label, placeholder, disabled = false, className }: TT
                     }
                     <textarea
                         {...field}
-                        placeholder={placeholder}
-                        disabled={disabled}
+                        placeholder={loading? "Loading...":placeholder}
+                        defaultValue={defaultValue}
+                        disabled={loading? true : disabled}
                         className={`input input-bordered w-full input-md ${className}`}
+                        rows={3}
+                        style={{ height: 'auto' }}
                     />
                 </label>
             )}

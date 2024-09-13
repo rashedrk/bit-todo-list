@@ -15,15 +15,16 @@ import { addTasksQuery } from "@/lib/query/hasuraQuery";
 import { getDescription } from "@/services/actions/getDescription";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { IoMdAdd } from "react-icons/io";
 import { toast } from "sonner";
 
 const AddNewTaskModal = ({ setTasks }: any) => {
   const { data: session } = useSession();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("")
+  const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  
 
   // Open or close the modal
   const handleClick = (action: string) => {
@@ -37,33 +38,24 @@ const AddNewTaskModal = ({ setTasks }: any) => {
     }
   };
 
-
-//getting the title from the input and setting it to the state
-//so that we can call the ai api with title
-  const handleOnChange = (event:React.FocusEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-
-  //here we using set timeout to get the total value of title after writing is finished
-  //then we call for the sdk and get the description
-  useEffect(() => {
-    if (!title) return; // Avoid running effect if title is empty
-
-    const timeoutId = setTimeout(async () => {
-      try {
-        const { text } = await getDescription(title);
+  //getting the title from the input and and calling the ai api to generate description
+  const handleOnBlur = async (event: React.FocusEvent<HTMLInputElement>) => {
+    setIsLoading(true);
+    try {
+        const value = event.target.value.trim();
+        if (value === "") {
+            setIsLoading(false);
+            return;
+        }
+        const { text } = await getDescription(value);
         setDescription(text);
-      } catch (error) {
-        console.error('Error fetching description:', error);
-      }
-    }, 1500);
-
-    return () => clearTimeout(timeoutId);
-  }, [title]);
-
-  
-console.log(description);
-
+    } catch (error) {
+        toast.error('An error occurred while fetching the description.');
+        console.error('Error generating description:', error);
+    } finally {
+        setIsLoading(false);
+    }
+  };
 
   //function to submit the form
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
@@ -79,22 +71,27 @@ console.log(description);
 
       const newTask = {
         ...values,
+        description: description.replace(/"/g, '\\"').replace(/\n/g, '\\n'),
         due_date: dayjs(values?.due_date).format("YYYY-MM-DD"),
         user_id: Number(userId),
       };
 
+      // console.log(newTask);
+      
+
       const query = addTasksQuery(newTask);
 
       const data = await axiosQuery(token, query);
-      const today = dayjs().format("YYYY-MM-DD");
-      // if (data?.data?.insert_task_one?.due_date === today) {
       if (data?.data?.insert_task_one) {
         setTasks((prevTasks: any) => [
           data?.data?.insert_task_one,
           ...prevTasks,
         ]);
+        toast.success("Task added Successfully", { id: toastId, duration: 2000 });
       }
-      toast.success("Task added Successfully", { id: toastId, duration: 2000 });
+      else {
+        toast.error("Something went wrong!", { id: toastId, duration: 2000 });
+      }
       handleClick("close");
     } catch (error: any) {
       console.error("Error while adding task:", error.message);
@@ -123,27 +120,17 @@ console.log(description);
           </button>
           <TForm onSubmit={onSubmit}>
             <div className="mb-8">
-              <label className="form-control w-full">
-                <div className="label">
-                  <span className="label-text">Title</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter task title"
-                  onChange={handleOnChange}
-                  
-                  className={`input input-bordered w-full input-md mb-2`}
-                />
-              </label>
-
-              {/* <TInput
+              <TInput
+                onBlur={handleOnBlur}
                 placeholder="Enter task title"
                 label="Title"
                 name="title"
                 type="text"
                 className="mb-2"
-              /> */}
+              />
               <TTextArea
+                defaultValue={description}
+                loading={isLoading}
                 placeholder="Enter task description"
                 label="Description"
                 name="description"

@@ -7,6 +7,7 @@ type TInputProps = {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  onBlur: React.FocusEventHandler<HTMLInputElement>
 };
 
 const TInput = ({
@@ -16,6 +17,7 @@ const TInput = ({
   placeholder,
   disabled = false,
   className,
+  onBlur
 }: TInputProps) => {
   const { control } = useFormContext();
 
@@ -33,6 +35,7 @@ const TInput = ({
           <input
             {...field}
             type={type}
+            onBlur={onBlur}
             placeholder={placeholder}
             disabled={disabled}
             className={`input input-bordered w-full input-md ${className}`}
