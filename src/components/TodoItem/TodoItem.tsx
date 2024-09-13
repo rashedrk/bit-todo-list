@@ -187,7 +187,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
           <EditTaskModal task={task} setTasks={setTasks} />
           <li
             onClick={
-              task?.isdeleted ? handleDeleteTask : handlePermanentDeleteTask
+              task?.deleted_at ? handlePermanentDeleteTask : handleDeleteTask
             }
           >
             <a>

@@ -24,6 +24,14 @@ const AddNewTaskModal = ({ setTasks }: any) => {
   const { data: session } = useSession();
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const defaultValues = {
+    title: "",
+    description: "",
+    category: "",
+    due_date: "",
+    priority: ""
+  };
   
 
   // Open or close the modal
@@ -83,6 +91,8 @@ const AddNewTaskModal = ({ setTasks }: any) => {
 
       const data = await axiosQuery(token, query);
       if (data?.data?.insert_task_one) {
+        // console.log(data?.data?.insert_task_one);
+        
         setTasks((prevTasks: any) => [
           data?.data?.insert_task_one,
           ...prevTasks,
@@ -93,6 +103,7 @@ const AddNewTaskModal = ({ setTasks }: any) => {
         toast.error("Something went wrong!", { id: toastId, duration: 2000 });
       }
       handleClick("close");
+      setDescription("");
     } catch (error: any) {
       console.error("Error while adding task:", error.message);
       toast.error(error.message, { id: toastId, duration: 2000 });
@@ -118,7 +129,7 @@ const AddNewTaskModal = ({ setTasks }: any) => {
           >
             ✕
           </button>
-          <TForm onSubmit={onSubmit}>
+          <TForm onSubmit={onSubmit} defaultValues={defaultValues}>
             <div className="mb-8">
               <TInput
                 onBlur={handleOnBlur}

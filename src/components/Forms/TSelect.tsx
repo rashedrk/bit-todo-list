@@ -40,7 +40,7 @@ const TSelect = ({
             {...field}
             className={`select select-bordered w-full  ${className}`}
           >
-            <option disabled selected>
+            <option value="" disabled selected>
               {placeholder}
             </option>
             {options?.map((option) => (

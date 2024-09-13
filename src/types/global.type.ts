@@ -6,7 +6,6 @@ export type TTask = {
     due_date: string
     priority: string
     updated_at: string
-    isdeleted?: boolean
     status: string
     task_id: number
     title: string

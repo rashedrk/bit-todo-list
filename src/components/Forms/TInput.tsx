@@ -7,7 +7,7 @@ type TInputProps = {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
-  onBlur: React.FocusEventHandler<HTMLInputElement>
+  onBlur?: React.FocusEventHandler<HTMLInputElement>
 };
 
 const TInput = ({
