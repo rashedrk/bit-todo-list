@@ -1,11 +1,11 @@
 'use client'
 
 import { sidebarGenerator } from "@/utils/SidebarGenerator";
-import { sidebarCategory, sidebarTasks } from "@/constant/sidebar.constant";
+import { sidebarTasks } from "@/constant/sidebar.constant";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
-
+import './drawer.css'
 
 const Drawer = ({ children }: { children: ReactNode }) => {
     const pathname = usePathname();
@@ -68,9 +68,6 @@ const Drawer = ({ children }: { children: ReactNode }) => {
           {/* Sidebar content here */}
           <li className="text-xs text-gray-600 font-semibold mb-1">TASKS</li>
           {sidebarGenerator(sidebarTasks, pathname)}
-
-          <li className="text-xs text-gray-600 font-semibold mb-1 mt-10">CATEGORY</li>
-          {sidebarGenerator(sidebarCategory, pathname)}
         </ul>
       </div>
     </div>

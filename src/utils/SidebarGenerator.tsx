@@ -5,6 +5,7 @@ type SidebarItem = {
   icon?: React.ReactNode;
 };
 export const sidebarGenerator = (items: SidebarItem[], pathname: string) => {
+  
   return items?.map((item) => (
     <li
       key={item.label}

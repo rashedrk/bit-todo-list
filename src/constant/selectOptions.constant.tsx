@@ -1,9 +1,9 @@
-import { sidebarCategory } from "./sidebar.constant";
+const category = ['personal', 'work', 'education']
 
-export const CategoryOptions = sidebarCategory.map((item) => {
+export const CategoryOptions = category.map((item) => {
   return {
-    label: item.label,
-    value: item.label.toLowerCase(),
+    label: item,
+    value: item.toLowerCase(),
   };
 });
 

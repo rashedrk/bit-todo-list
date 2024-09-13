@@ -1,0 +1,25 @@
+/* .menu li :hover{
+    background-color: transparent;
+    color:  #00A5A7; 
+}
+
+.menu a :active {
+    background-color: green;
+} */
+
+.activeDashboard {
+    background-color: white;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.activeDashboard :hover{
+    background-color: white;
+    border-radius: 10px;
+}
+
+
+.inactiveDashboard :hover{
+    background-color: transparent;
+    color:  #4e4d4d; 
+}

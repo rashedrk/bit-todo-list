@@ -121,7 +121,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
         <div className={task?.deleted_at && "hidden"}>
           <input
             type="checkbox"
-            className="checkbox checkbox-xs mt-1 cursor-pointer"
+            className="checkbox checkbox-xs mt-1 cursor-pointer checkbox-success"
             checked={task?.status === "completed"}
             onClick={updateTaskStatus}
           />
@@ -155,7 +155,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
               <p>{task?.due_date}</p>
             </div>
             <div className="flex justify-start items-center gap-2 border-l-2 ps-4">
-              <div
+              {/* <div
                 className={`h-3 w-3 rounded bg-[#66D9E8] ${
                   task?.category === "personal"
                     ? "bg-[#FF6B6B]"
@@ -163,7 +163,7 @@ const TodoItem = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
                     ? "bg-[#66D9E8]"
                     : "bg-[#FFD43B]"
                 }`}
-              ></div>
+              ></div> */}
               <p>{capitalize(task?.category)}</p>
             </div>
             <div className="flex justify-start items-center gap-2 border-l-2 ps-4">
