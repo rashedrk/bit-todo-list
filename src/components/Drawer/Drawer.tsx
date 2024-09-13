@@ -48,6 +48,8 @@ const Drawer = ({ children }: { children: ReactNode }) => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
+        
+        <ul className="menu min-h-[100vh] bg-[#F2F4F7]  w-52 p-4 border-e">
         <div className="md:flex justify-start   hidden border-e">
           <Link
             href="/"
@@ -56,7 +58,6 @@ const Drawer = ({ children }: { children: ReactNode }) => {
             Bit<span className="text-gray-700">Todo</span>
           </Link>
         </div>
-        <ul className="menu min-h-[90vh]  w-52 p-4 border-e">
           <div className="flex justify-start mb-3 md:hidden border-b">
             <Link
               href="/"

@@ -14,6 +14,7 @@ import "./pagination.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
+import NoData from "@/components/NoDataFound/NoData";
 
 const TodaysTaskPage = () => {
   const { data: session } = useSession();
@@ -38,7 +39,7 @@ const TodaysTaskPage = () => {
         }
         // offset = (page num - 1) * limit
         const offset = (page - 1) * 10;
-        const filterDate = date ? dayjs(date).format('YYYY-MM-DD') : "";
+        const filterDate = date ? dayjs(date).format("YYYY-MM-DD") : "";
         const query = getTasksQuery(userId, offset, sortOrder, filterDate);
         const data = await axiosQuery(token, query);
         setTasks(data.data.task);
@@ -88,20 +89,26 @@ const TodaysTaskPage = () => {
             </select>
           </div>
         </div>
-        {tasks?.map((item: TTask) => (
-          <div key={item.task_id}>
-            <TodoItem task={item} setTasks={setTasks} />
-          </div>
-        ))}
+        {tasks.length > 0 ? (
+          tasks?.map((item: TTask) => (
+            <div key={item.task_id}>
+              <TodoItem task={item} setTasks={setTasks} />
+            </div>
+          ))
+        ) : (
+          <NoData />
+        )}
       </div>
-      <div className="flex justify-start mt-2">
-        <ResponsivePagination
-          current={page}
-          total={totalPages}
-          onPageChange={setPage}
-          maxWidth={20}
-        />
-      </div>
+      {tasks.length > 0 && (
+        <div className="flex justify-start mt-2">
+          <ResponsivePagination
+            current={page}
+            total={totalPages}
+            onPageChange={setPage}
+            maxWidth={20}
+          />
+        </div>
+      )}
     </div>
   );
 };

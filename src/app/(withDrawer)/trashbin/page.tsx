@@ -1,6 +1,7 @@
 "use client";
 
 import Loader from "@/components/Loader/Loader";
+import NoData from "@/components/NoDataFound/NoData";
 import TodoItem from "@/components/TodoItem/TodoItem";
 import axiosQuery from "@/lib/query/axiosQuery";
 import { getDeletedTasksQuery } from "@/lib/query/hasuraQuery";
@@ -38,6 +39,7 @@ const TrashBinPage = () => {
   return isLoading ? (
     <Loader />
   ) : (
+    tasks.length > 0 ?
     <div>
       <div className="px-20">
         <h1 className="mb-5 text-2xl font-semibold">
@@ -50,6 +52,8 @@ const TrashBinPage = () => {
         ))}
       </div>
     </div>
+    :
+    <NoData/>
   );
 };
 

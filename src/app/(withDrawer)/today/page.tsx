@@ -2,6 +2,7 @@
 
 import Loader from "@/components/Loader/Loader";
 import AddNewTaskModal from "@/components/Modals/AddNewTaskModal/AddNewTaskModal";
+import NoData from "@/components/NoDataFound/NoData";
 import TodoItem from "@/components/TodoItem/TodoItem";
 import axiosQuery from "@/lib/query/axiosQuery";
 import { getTasksQuery, getTodayTasksQuery } from "@/lib/query/hasuraQuery";
@@ -43,6 +44,7 @@ const TodaysTaskPage = () => {
       {isLoading ? (
         <Loader />
       ) : (
+        tasks.length > 0 ?
         <div className="px-5">
           <h1 className="mb-5 text-2xl font-semibold">
             Todays Tasks - <span className="">{tasks.length}</span>
@@ -56,6 +58,7 @@ const TodaysTaskPage = () => {
             ))}
           </div>
         </div>
+        : <NoData/>
       )}
     </>
   );
