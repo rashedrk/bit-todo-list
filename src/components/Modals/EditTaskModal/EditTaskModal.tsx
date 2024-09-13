@@ -11,7 +11,9 @@ import {
 } from "@/constant/selectOptions.constant";
 import axiosQuery from "@/lib/query/axiosQuery";
 import { updateTaskQuery } from "@/lib/query/hasuraQuery";
+import { taskSchema } from "@/schema/task.schema";
 import { TTask } from "@/types/global.type";
+import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
@@ -33,7 +35,7 @@ const EditTaskModal = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
   // Open or close the modal
   const handleClick = (action: string) => {
     const modal = document.getElementById(
-      "editTaskModal"
+      `${task.task_id}`
     ) as HTMLDialogElement | null;
     if (modal && action === "open") {
       modal.showModal();
@@ -87,7 +89,7 @@ const EditTaskModal = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
           <FaEdit className="text-gray-700 " /> Edit
         </a>
       </li>
-      <dialog id="editTaskModal" className="modal modal-bottom sm:modal-middle">
+      <dialog id={`${task.task_id}`} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg pb-5">Edit your todo task</h3>
           <button
@@ -96,7 +98,7 @@ const EditTaskModal = ({ task, setTasks }: { task: TTask; setTasks: any }) => {
           >
             ✕
           </button>
-          <TForm onSubmit={onSubmit} defaultValues={defaultValues}>
+          <TForm onSubmit={onSubmit} defaultValues={defaultValues} resolver={zodResolver(taskSchema)}>
             <div className="mb-8">
               <TInput
                 placeholder="Enter task title"
