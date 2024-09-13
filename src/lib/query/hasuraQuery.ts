@@ -15,7 +15,7 @@ export const loginQuery = {
 export const getTasksQuery = (userId: string) => `
   query GetTasks {
     task(where: {
-      user_id: { _eq: "${userId}" },}, order_by: {due_date: asc}) {
+      user_id: { _eq: "${userId}" },}, order_by: {created_at: desc}) {
       category
       created_at
       

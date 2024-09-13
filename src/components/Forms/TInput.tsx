@@ -25,7 +25,7 @@ const TInput = ({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error }  }) => (
         <label className="form-control w-full">
           {label && (
             <div className="label">
@@ -40,6 +40,9 @@ const TInput = ({
             disabled={disabled}
             className={`input input-bordered w-full input-md ${className}`}
           />
+          {
+            error && <p className="text-xs text-red-500">{error?.message}</p>
+          }
         </label>
       )}
     />

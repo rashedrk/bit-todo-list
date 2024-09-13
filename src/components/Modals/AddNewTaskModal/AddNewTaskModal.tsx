@@ -12,7 +12,9 @@ import {
 import axiosQuery from "@/lib/query/axiosQuery";
 // import { fetchGraphQL } from "@/lib/query/graphqlClient";
 import { addTasksQuery } from "@/lib/query/hasuraQuery";
+import { taskSchema } from "@/schema/task.schema";
 import { getDescription } from "@/services/actions/getDescription";
+import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -28,9 +30,9 @@ const AddNewTaskModal = ({ setTasks }: any) => {
   const defaultValues = {
     title: "",
     description: "",
-    category: "",
+    category: 0,
     due_date: "",
-    priority: ""
+    priority: 0
   };
   
 
@@ -69,6 +71,8 @@ const AddNewTaskModal = ({ setTasks }: any) => {
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Adding task, please wait...");
 
+    console.log("date",values.due_date);
+    
     try {
       const token = session?.accessToken;
       const userId = session?.user?.id;
@@ -80,7 +84,7 @@ const AddNewTaskModal = ({ setTasks }: any) => {
       const newTask = {
         ...values,
         description: values.description || description,
-        due_date: dayjs(values?.due_date).format("YYYY-MM-DD"),
+        due_date: values?.due_date,
         user_id: Number(userId),
       };
 
@@ -129,7 +133,11 @@ const AddNewTaskModal = ({ setTasks }: any) => {
           >
             ✕
           </button>
-          <TForm onSubmit={onSubmit} defaultValues={defaultValues}>
+          <TForm 
+          onSubmit={onSubmit} 
+          defaultValues={defaultValues}
+          resolver={zodResolver(taskSchema)}
+          >
             <div className="mb-8">
               <TInput
                 onBlur={handleOnBlur}

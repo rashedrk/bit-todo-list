@@ -28,7 +28,7 @@ const TSelect = ({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field,fieldState: { error }  }) => (
         <label className="form-control w-full">
           {label && (
             <div className="label">
@@ -40,7 +40,7 @@ const TSelect = ({
             {...field}
             className={`select select-bordered w-full  ${className}`}
           >
-            <option value="" disabled selected>
+            <option value={0} disabled selected>
               {placeholder}
             </option>
             {options?.map((option) => (
@@ -49,6 +49,9 @@ const TSelect = ({
               </option>
             ))}
           </select>
+          {
+            error && <p className="text-xs text-red-500">{error?.message}</p>
+          }
         </label>
       )}
     />

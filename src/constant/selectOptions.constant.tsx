@@ -7,7 +7,7 @@ export const CategoryOptions = sidebarCategory.map((item) => {
   };
 });
 
-const priority = ['High', 'Medium', 'Low']
+export const priority = ['High', 'Medium', 'Low']
 
 export const priorityOptions = priority.map(item => {
   return {
