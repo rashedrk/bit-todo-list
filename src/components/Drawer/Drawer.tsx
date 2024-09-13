@@ -50,7 +50,7 @@ const Drawer = ({ children }: { children: ReactNode }) => {
           className="drawer-overlay"
         ></label>
 
-        <ul className="menu min-h-[90vh] bg-[#F2F4F7]  w-52 p-4 border-e">
+        <ul className="menu min-h-[100vh] bg-[#F2F4F7]  w-52 p-4 border-e">
           <div className="md:flex justify-start   hidden border-e">
             <Link
               href="/"
@@ -70,8 +70,9 @@ const Drawer = ({ children }: { children: ReactNode }) => {
           {/* Sidebar content here */}
           <li className="text-xs text-gray-600 font-semibold mb-1">TASKS</li>
           {sidebarGenerator(sidebarTasks, pathname)}
+          <div className="flex justify-start items-center gap-2 btn ps-10 mt-[55vh]" onClick={() => signOut()}><PiSignOutBold />Log out</div>
         </ul>
-        <div className="flex justify-center items-center gap-2 cursor-pointer text-sm btn" onClick={() => signOut()}><PiSignOutBold />Log out</div>
+        
       </div>
 
     </div>
