@@ -60,6 +60,10 @@ npm run dev
 5. **Access the Application:**
 Open your web browser and navigate to `http://localhost:3000` to access the application.
 
+### Demo Account
+**Email:** alice@example.com
+**Password:** password123
+
 
 ## Feedback and Contributions
 
